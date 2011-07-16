@@ -1,0 +1,41 @@
+h1. Prefetch-Test::Unit
+
+Prefetch-Test::Unit shortens start-up time of Rails unit test using Test::Unit.
+
+h2. Usage
+
+Execute ptestunit.rb in your Rails app root directory.
+
+Start server first.
+
+<pre>
+<code>
+$ ruby ptestunit.rb server
+</code>
+</pre>
+
+Execute your tests.
+
+<pre>
+<code>
+$ ruby ptestunit.rb run test/unit/**/*.rb
+</code>
+</pre>
+
+There are no way to stop your server process. Use 'killall ruby' command to stop it.
+
+h2. How it works
+
+The 'server' process start sub-process as "ruby ptestunit.rb test".
+
+The 'test' process loads your Rails app and wait.
+
+The 'run' process connect to 'test' process using socket, and sends test files to it.
+
+The 'test' process executes the test and exit. And the 'server' process start 'test' process again.
+
+h2. Copying notice
+
+Written by Soutaro Matsumoto.
+
+Distributed under MIT license.
