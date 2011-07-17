@@ -14,6 +14,12 @@ when "server"
     STDERR.puts "finish"
   end
 when "test"
+  require "minitest/unit"
+  class ::MiniTest::Unit
+    # to skip installation of autorun
+    @@installed_at_exit = true
+  end
+  
   require "stringio"
   require "test/unit"
   require "pathname"
@@ -26,9 +32,6 @@ when "test"
   
   s = TCPServer.open(8080)
   socks = [s]
-  
-  _, port, a, b = s.addr
-  puts port
   
   puts "ready !"
   
@@ -54,7 +57,9 @@ when "test"
       end
     end
   end
-  
+
+  MiniTest::Unit.new.run
+
 when "run"
   s = TCPSocket.open("localhost", 8080)
   ARGV.each {|x|
